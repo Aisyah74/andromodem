@@ -67,7 +67,8 @@ func (a *AdbCommand) GetAirplaneModeStatus(device goadb.Device) (string, error) 
 }
 
 func (a *AdbCommand) EnableAirplaneMode(device goadb.Device) (string, error) {
-	enableAirplaneMode, err := device.RunCommand("cmd connectivity airplane-mode enable")
+	enableAirplaneMode, err := device.RunCommand("adb shell settings put global airplane_mode_on 1
+adb shell am broadcast -a android.intent.action.AIRPLANE_MODE")
 	if err != nil {
 		logrus.WithField("location", "AdbDeviceCommand.EnableAirplaneMode").Errorf("EnableAirplaneMode(): failed enable airplane mode: %v", err)
 		return "", err
@@ -76,7 +77,8 @@ func (a *AdbCommand) EnableAirplaneMode(device goadb.Device) (string, error) {
 }
 
 func (a *AdbCommand) DisableAirplaneMode(device goadb.Device) (string, error) {
-	disableAirplaneMode, err := device.RunCommand("cmd connectivity airplane-mode disable")
+	disableAirplaneMode, err := device.RunCommand("adb shell settings put global airplane_mode_on 0
+adb shell am broadcast -a android.intent.action.AIRPLANE_MODE")
 	if err != nil {
 		logrus.WithField("location", "AdbDeviceCommand.DisableAirplaneMode").Errorf("DisableAirplaneMode(): failed enable airplane mode: %v", err)
 		return "", err
